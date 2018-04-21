@@ -2,6 +2,9 @@
     <head>
         <title>AuData - How did my data get around?</title>
         <script type="text/javascript" src="bower_components/crypto-js/crypto-js.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.min.js"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.min.css" type="text/css" />
+        <script type="text/javascript" src="scripts/tree.js"></script>
     </head>
 <body>
     Source
@@ -36,6 +39,9 @@
     <br />
     <button onclick="senderSignature()">Sender's signature</button>
     <button onclick="recipientSignature()">Recipient's signature</button>
+    <br /><br />
+    <button onclick="visualizeAuditTrail(generateTree())">Display tree</button>
+    <div id="auditTrailVisualization"></div>
     <script>
         var contract = null;
         var auditTrail = null;
