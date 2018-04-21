@@ -1,5 +1,9 @@
 <html>
-    <head></head>
+    <head>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.min.js"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.min.css" type="text/css" />
+        <script type="text/javascript" src="scripts/tree.js"></script>
+    </head>
 <body>
     Source
     <div>
@@ -33,6 +37,9 @@
     <br />
     <button onclick="senderSignature()">Sender's signature</button>
     <button onclick="recepientSignature()">Recepient's signature</button>
+    <br /><br />
+    <button onclick="visualizeAuditTrail(generateTree())">Display tree</button>
+    <div id="auditTrailVisualization"></div>
     <script>
         function addAAuditTrail() {
             const container = document.getElementById("auditTrails");

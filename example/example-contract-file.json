@@ -19,6 +19,21 @@
     "audit" : [
         {
             "details": {
+                "uid": "b3869e2a-549e-48d6-84ae-ba6234e348ec",
+                "source": "Dodgybridge Analytica",
+                "destination": "Godonlyknows Inc",
+                "date": "2018-04-01",
+                "manifest": {
+                    "recordCount": "20",
+                    "description": "User name, Phone number, friends, likes"
+                },
+                "sourceContracts": [
+                    "856f94be-80f9-4644-a3a0-c111e017b00b"
+                ]
+            }
+        },
+        {
+            "details": {
                 "uid": "856f94be-80f9-4644-a3a0-c111e017b00b",
                 "source": "TrustyMcTrustFace Research",
                 "destination": "Dodgybridge Analytica",
@@ -43,7 +58,8 @@
                 "manifest": {
                     "recordCount": "20",
                     "description": "User name, Phone number, friends, likes"
-                } 
+                },
+                "sourceContracts": []
             },
             "sourceSignature": "skdfjklsdfjsdkfjsdlkfskdfjkld",
             "destinationSignature": "ssdkfajsldkfjasldkfjasldkfj"
