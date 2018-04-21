@@ -24,7 +24,11 @@ function visualizeAuditTrail(tree) {
         nodes: tree.nodes,
         edges: tree.edges
     };
-    var options = {};
+    var options = {
+        edges: {
+            arrows: 'to;'
+        }
+    };
 
     // initialize your network!
     var network = new vis.Network(container, data, options);
