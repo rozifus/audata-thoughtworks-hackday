@@ -1,5 +1,8 @@
 <html>
-    <head></head>
+    <head>
+        <title>AuData - How did my data get around?</title>
+        <script type="text/javascript" src="bower_components/crypto-js/crypto-js.js"></script>
+    </head>
 <body>
     Source
     <div>
@@ -32,8 +35,23 @@
     </div>
     <br />
     <button onclick="senderSignature()">Sender's signature</button>
-    <button onclick="recepientSignature()">Recepient's signature</button>
+    <button onclick="recipientSignature()">Recipient's signature</button>
     <script>
+        var contract = null;
+        var auditTrail = null;
+
+        function generateUUID() {
+            /* Obtained from https://stackoverflow.com/a/8809472/3623499 */
+            var d = new Date().getTime();
+            if (typeof performance !== 'undefined' && typeof performance.now === 'function'){
+                d += performance.now();
+            } //use high-precision timer if available
+            return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+            var r = (d + Math.random() * 16) % 16 | 0;
+            d = Math.floor(d / 16);
+            return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+        });
+}
         function addAAuditTrail() {
             const container = document.getElementById("auditTrails");
             const element = document.createElement("textarea");
@@ -46,28 +64,83 @@
             container.appendChild(elementDiv).appendChild(brk);
         }
 
-        function contract() {
+        function assembleContract() {
             const source = document.getElementById("source").value;
             const destination = document.getElementById("destination").value;
             const dateOfExchange = document.getElementById("dateOfExchange").value;
             const recordDescription = document.getElementById("recordDescription").value;
             const numberOfRecords = document.getElementById("numberOfRecords").value;
             const auditTrailElements = document.getElementsByName("auditTrail");
-            const auditTrails = [];
-            for (let i=0;i<auditTrailElements.length;i++){
-                auditTrails.push(auditTrailElements[i].value)
-            }
-            const contract = {source, destination, dateOfExchange, recordDescription, numberOfRecords, auditTrails};
-            console.log(contract)
+            var sourceContracts = function() {
+                        var sourceContract;
+                        var sources = [];
+                        for (let i = 0; i < auditTrailElements.length; i++) {
+                            try {
+                                sourceContract = JSON.parse(auditTrailElements[i].value);
+                                // append ID of source contract
+                                sources.append(sourceContract.details.contractId);
+                            } catch (a) {
+                                console.log('Could not parse source contracts.')
+                            }
+                        }
+                        return source;
+                    };
+            var audit = function () {
+                    var sourceContract;
+                    auditTrail = [];
+                    for (let i = 0; i < auditTrailElements.length; i++) {
+                        try {
+                            sourceContract = JSON.parse(auditTrailElements[i].value);
+                            // append ID of source contract
+                            auditTrail.concat([sourceContract.details], sourceContract.audit);
+                        } catch (a) {
+                            console.log('Could not build audit trail.');
+                        }
+                    }
+                    return auditTrail;
+                };
+            contract = {
+                details: {
+                    "contractId": generateUUID(),
+                    "source": source,
+                    "destination": destination,
+                    "date": dateOfExchange,
+                    "manifest": {
+                        "recordNo": numberOfRecords,
+                        "description": recordDescription
+                    },
+                    "sourceContracts": sourceContracts()
+                },
+                sourceSignature: null,
+                destinationSignature: null,
+                "audit": audit()
+            };
+            return contract;
         }
 
         function senderSignature() {
-
+            assembleContract();
+            contract.sourceSignature = signContract();
         }
 
-        function recepientSignature() {
+        function recipientSignature() {
+            if (contract === null) {
+                return false;
+            }
+            contract.destinationSignature = signContract();
+            document.getElementById("contract").innerHTML = JSON.stringify(contract);
+        }
 
+        function signContract() {
+            var text = "";
+            var possible = "abcdef0123456789";
+
+            for (var i = 0; i < 64; i++)
+                text += possible.charAt(Math.floor(Math.random() * possible.length));
+
+            return text;
         }
     </script>
+    <div id="contract"></div>
 </body>
 </html>
