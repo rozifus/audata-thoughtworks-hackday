@@ -1,0 +1,73 @@
+<html>
+    <head></head>
+<body>
+    Source
+    <div>
+        <input type="text" id="source" value="Facebook"/>
+    </div>
+    <br />
+    <div>
+        Destination: <input type="text" id="destination" value="NSA"/>
+    </div>
+    <div>
+        Date of exchange: <input type="text" id="dateOfExchange" value="22/04/2018"/>
+    </div>
+    <br />
+    <div>
+        <h3>Manifest</h3>
+        <div>
+            Description of records: <input type="text" id="recordDescription" />
+        </div>
+        <div>
+            Number of records: <input type="text" id="numberOfRecords" />
+        </div>
+    </div>
+    <br />
+    Audit trail:
+    <button  onclick="addAAuditTrail()">Add another audit trail</button>
+    <div id="auditTrails">
+        <div>
+            <textarea name="auditTrail" ></textarea>
+        </div>
+    </div>
+    <br />
+    <button onclick="senderSignature()">Sender's signature</button>
+    <button onclick="recepientSignature()">Recepient's signature</button>
+    <script>
+        function addAAuditTrail() {
+            const container = document.getElementById("auditTrails");
+            const element = document.createElement("textarea");
+            element.setAttribute("name", "auditTrail");
+
+            const elementDiv = document.createElement("div");
+            elementDiv.appendChild(element);
+
+            const brk = document.createElement("break");
+            container.appendChild(elementDiv).appendChild(brk);
+        }
+
+        function contract() {
+            const source = document.getElementById("source").value;
+            const destination = document.getElementById("destination").value;
+            const dateOfExchange = document.getElementById("dateOfExchange").value;
+            const recordDescription = document.getElementById("recordDescription").value;
+            const numberOfRecords = document.getElementById("numberOfRecords").value;
+            const auditTrailElements = document.getElementsByName("auditTrail");
+            const auditTrails = [];
+            for (let i=0;i<auditTrailElements.length;i++){
+                auditTrails.push(auditTrailElements[i].value)
+            }
+            const contract = {source, destination, dateOfExchange, recordDescription, numberOfRecords, auditTrails};
+            console.log(contract)
+        }
+
+        function senderSignature() {
+
+        }
+
+        function recepientSignature() {
+
+        }
+    </script>
+</body>
+</html>
